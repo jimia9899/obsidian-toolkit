@@ -5,7 +5,7 @@ from sync.sync_runner import run_sync
 
 def main():
     parser = argparse.ArgumentParser(description="Sync Obsidian notes to Confluence")
-    parser.add_argument("--config", type=str, default="config.yaml", help="Path to config.yaml")
+    parser.add_argument("--config", type=str, default="config/default.yaml", help="Path to config.yaml")
     parser.add_argument("--state", type=str, default="sync_state.json", help="Path to sync state file")
     parser.add_argument("--tag", type=str, help="Override tag filter")
     parser.add_argument("--dir", type=str, nargs="*", help="Override include_dirs list")

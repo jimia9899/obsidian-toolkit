@@ -9,25 +9,22 @@ from confluence.api import get_confluence_client, create_or_update_page
 
 import yaml
 
-CONFIG_PATH = "config.yaml"
-STATE_PATH = "sync_state.json"
-
-import yaml
-
-def load_config():
-    config_file = os.environ.get("CONFIG_FILE", "config/default.yml")
+def load_config(config_path):
+    config_file = os.environ.get("CONFIG_FILE", config_path)
     with open(config_file, "r") as f:
         config = yaml.safe_load(f)
         return config
 
-def run_sync():
-    config = load_config()
+def run_sync(config_path='config/default.yaml', state_path="sync_state.json",
+             tag_override=None, dirs_override=None, dry_run=False):
+    config = load_config(config_path)
+    print(config)
     vault_path = config["obsidian_path"]
     tag_filter = config["filter"].get("tag")
     include_dirs = config["filter"].get("include_dirs", [])
     conf_cfg = config["confluence"]
 
-    state = load_state(STATE_PATH)
+    state = load_state(state_path)
     confluence = get_confluence_client(conf_cfg)
 
     print(f"🔍 扫描目录: {vault_path}")
@@ -69,5 +66,5 @@ def run_sync():
 
         print(f"✅ 已同步: {title}")
 
-    save_state(STATE_PATH, state)
+    save_state(state_path, state)
     print("🎉 所有任务完成。")
